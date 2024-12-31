@@ -37,9 +37,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className='flex h-screen w-full flex-col items-center justify-center bg-green-50'>
-            {children}
-          </main>
+          <main className=' '>{children}</main>
           <Toaster />
         </ThemeProvider>
       </body>
