@@ -16,7 +16,7 @@ export default function LoginPage() {
       <div className='flex h-screen w-full items-center justify-center px-4'>
         <Card className='max-w-sm'>
           <CardHeader>
-            <CardTitle className='text-2xl'>Login</CardTitle>
+            <CardTitle className='text-2xl'>Login 🔓 </CardTitle>
             <CardDescription>
               Enter your email below to login in to your account
             </CardDescription>
@@ -24,7 +24,7 @@ export default function LoginPage() {
           <CardContent>
             <form className='flex flex-col gap-y-4'>
               <div className='flex flex-col gap-y-2'>
-                <Label>Email</Label>
+                <Label>Email </Label>
                 <Input
                   name='email'
                   type='email'
