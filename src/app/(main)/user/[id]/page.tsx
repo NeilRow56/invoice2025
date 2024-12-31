@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { cache } from 'react'
 
 interface PageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 const getUser = cache(async (id: string) => {
@@ -14,13 +14,15 @@ const getUser = cache(async (id: string) => {
   })
 })
 
-export async function generateStaticParams() {
-  const allUsers = await db.user.findMany()
+// export async function generateStaticParams({ params }: PageProps) {
+//   const allUsers = await db.user.findMany()
+//   const { id } = await params
 
-  return allUsers.map(({ id }) => ({ id }))
-}
+//   return allUsers.map(({ id }) => id)
+// }
 
-export async function generateMetadata({ params: { id } }: PageProps) {
+export async function generateMetadata({ params }: PageProps) {
+  const { id } = await params
   const user = await getUser(id)
 
   return {
@@ -28,11 +30,11 @@ export async function generateMetadata({ params: { id } }: PageProps) {
   }
 }
 
-export default async function Page({ params: { id } }: PageProps) {
+export default async function Page({ params }: PageProps) {
   // Artificial delay to showcase static caching
   await new Promise(resolve => setTimeout(resolve, 1500))
 
-  const user = await getUser(id)
+  const user = await getUser((await params).id)
 
   if (!user) notFound()
 
@@ -48,7 +50,7 @@ export default async function Page({ params: { id } }: PageProps) {
         />
       )}
       <h1 className='text-center text-xl font-bold'>
-        {user?.name || `User ${id}`}
+        {user?.name || `User ${(await params).id}`}
       </h1>
       <p className='text-muted-foreground'>
         User since {new Date(user.createdAt).toLocaleDateString()}

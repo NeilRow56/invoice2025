@@ -13,20 +13,22 @@ import {
 import { Input } from '@/components/ui/input'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { User } from 'next-auth'
 import { useForm } from 'react-hook-form'
-
+import { updateProfile } from './actions'
 import { useToast } from '@/hooks/use-toast'
 import { updateProfileSchema, UpdateProfileValues } from '@/lib/vakidations'
-import { updateProfile } from './actions'
 
-export default function SettingsPage() {
+interface SettingsFormProps {
+  user: User
+}
+
+export default function SettingsForm({ user }: SettingsFormProps) {
   const { toast } = useToast()
 
   const form = useForm<UpdateProfileValues>({
     resolver: zodResolver(updateProfileSchema),
-    // TODO: Add default value from current user
-
-    defaultValues: { name: '' }
+    defaultValues: { name: user.name || '' }
   })
 
   async function onSubmit(data: UpdateProfileValues) {
@@ -44,11 +46,11 @@ export default function SettingsPage() {
   return (
     <main className='px-3 py-10'>
       <section className='mx-auto max-w-7xl space-y-6'>
-        <h1 className='text-center text-3xl font-bold'>Settings</h1>
+        <h1 className='text-3xl font-bold'>Settings</h1>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='mx-auto max-w-sm space-y-2.5'
+            className='max-w-sm space-y-2.5'
           >
             <FormField
               control={form.control}
