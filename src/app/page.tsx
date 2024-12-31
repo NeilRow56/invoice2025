@@ -7,7 +7,6 @@ export default function Home() {
       <h1 className='text-center text-4xl font-bold'>Next-Auth V5 Tutorial</h1>
       <h2 className='text-center text-2xl font-semibold'>Users</h2>
       {/* TODO: Display users here */}
-      {/* <SignInButton /> */}
     </main>
   )
 }
