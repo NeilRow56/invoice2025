@@ -3,6 +3,7 @@
 import db from '@/lib/db'
 import { updateProfileSchema, UpdateProfileValues } from '@/lib/vakidations'
 import { auth } from '@/utils/auth'
+
 import { revalidatePath } from 'next/cache'
 
 // To learn more about server actions, watch my YT tutorial: https://www.youtube.com/watch?v=XD5FpbVpWzk

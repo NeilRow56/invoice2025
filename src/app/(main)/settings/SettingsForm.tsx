@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form'
 import { updateProfile } from './actions'
 import { useToast } from '@/hooks/use-toast'
 import { updateProfileSchema, UpdateProfileValues } from '@/lib/vakidations'
+import { useSession } from 'next-auth/react'
 
 interface SettingsFormProps {
   user: User
@@ -25,6 +26,8 @@ interface SettingsFormProps {
 
 export default function SettingsForm({ user }: SettingsFormProps) {
   const { toast } = useToast()
+
+  const session = useSession()
 
   const form = useForm<UpdateProfileValues>({
     resolver: zodResolver(updateProfileSchema),
@@ -35,6 +38,7 @@ export default function SettingsForm({ user }: SettingsFormProps) {
     try {
       await updateProfile(data)
       toast({ description: 'Profile updated.' })
+      session.update()
     } catch (error) {
       toast({
         variant: 'destructive',

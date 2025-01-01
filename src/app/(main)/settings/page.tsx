@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { auth } from '@/utils/auth'
+import getSession from '@/lib/getSession'
 import { redirect } from 'next/navigation'
 import SettingsForm from './SettingsForm'
 
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function Settings() {
   // Protect this page via authentication
-  const session = await auth()
+  const session = await getSession()
   const user = session?.user
 
   if (!user) {

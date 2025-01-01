@@ -1,15 +1,19 @@
+'use client'
+
 import logo from '../../../public/logo.png'
 
 import Image from 'next/image'
 import Link from 'next/link'
 import ThemeToggle from './ThemeToggle'
 import { Button } from '../ui/button'
-import { auth, signIn } from '@/utils/auth'
+
 import UserButton from './UserButton'
 
-export default async function Navbar() {
-  const session = await auth()
-  const user = session?.user
+import { signIn, useSession } from 'next-auth/react'
+
+export default function Navbar() {
+  const session = useSession()
+  const user = session.data?.user
   return (
     <header className='flex w-full items-center shadow-sm'>
       <div className='container mx-auto flex w-full items-center justify-between p-3'>
@@ -37,7 +41,8 @@ export default async function Navbar() {
           <span className='tracking-tight'>Settings</span>
         </Link>
         <div className='flex items-center gap-3'>
-          {user ? <UserButton user={user} /> : <SignInButton />}
+          {user && <UserButton user={user} />}
+          {!user && session.status !== 'loading' && <SignInButton />}
           <ThemeToggle />
         </div>
       </div>
@@ -46,14 +51,5 @@ export default async function Navbar() {
 }
 
 function SignInButton() {
-  return (
-    <form
-      action={async () => {
-        'use server'
-        await signIn()
-      }}
-    >
-      <Button type='submit'>Sign in</Button>
-    </form>
-  )
+  return <Button onClick={() => signIn()}>Sign in</Button>
 }
