@@ -19,7 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Google,
     Resend({
-      from: 'admin@wpaccpac.org'
+      from: process.env.EMAIL_FROM
     })
   ]
 })
